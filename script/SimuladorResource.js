@@ -1,29 +1,50 @@
-import { Produto } from "./Produto.js";
-import { ResultadoSimulacaoDto } from "./ResultadoSimulacaoDto.js";
-import { RetornoSimulacaoDto } from "./RetornoSimulacaoDto.js";
+// Importar as funções de cálculo de parcela
+import { calcularParcelasSAC, calcularParcelasPrice } from './calculoParcelas.js';
 
-const { calcularParcelasSAC, calcularParcelasPrice } = require('./calculoParcelas');
+// Importar as classes de dados
+import { Produto } from './Produto.js';
+import { ResultadoSimulacaoDto } from './ResultadoSimulacaoDto.js';
+import { RetornoSimulacaoDto } from './RetornoSimulacaoDto.js';
+
+// Função para simular o empréstimo
 async function simular(entrada) {
+  // Obter o prazo e o valor desejado do usuário
   const { prazo, valorDesejado } = entrada;
+
+  // Obter o código do produto com base no prazo
   const codigoProduto = getCodigoProduto(prazo);
+
+  // Obter o produto da API
   const produto = await getProduto(codigoProduto);
 
+  // Calcular a taxa de juros
   const taxaJuros = produto.PC_TAXA_JUROS;
+
+  // Calcular o valor total
   const valorTotal = valorDesejado + (valorDesejado * taxaJuros);
 
+  // Criar a lista de resultados de simulação
   const resultadoSimulacao = [];
+
+  // Adicionar os resultados SAC e PRICE
   resultadoSimulacao.push(criarResultadoSimulacao('SAC', calcularParcelasSAC(prazo, valorTotal, taxaJuros)));
   resultadoSimulacao.push(criarResultadoSimulacao('PRICE', calcularParcelasPrice(prazo, valorTotal, taxaJuros)));
 
+  // Criar o DTO de retorno da simulação
   const resultadoSimulacaoDto = new RetornoSimulacaoDto();
+
+  // Definir as propriedades do DTO
   resultadoSimulacaoDto.codigoProduto = produto.CO_PRODUTO;
   resultadoSimulacaoDto.descricaoProduto = produto.NO_PRODUTO;
   resultadoSimulacaoDto.taxaJuros = taxaJuros;
   resultadoSimulacaoDto.valorTotal = valorTotal;
   resultadoSimulacaoDto.resultadoSimulacao = resultadoSimulacao;
 
+  // Retornar o DTO
   return resultadoSimulacaoDto;
 }
+
+// Funções auxiliares para obter o código do produto e o produto da API (substituir com a lógica específica da API)
 function getCodigoProduto(prazo) {
   if (prazo >= 0 && prazo <= 24) {
     return 1;
@@ -37,12 +58,13 @@ function getCodigoProduto(prazo) {
 }
 
 async function getProduto(codigoProduto) {
-  // Implementar lógica para obter o produto da API com base no código
+  // Implementar a lógica para obter o produto da API com base no código
   const response = await fetch(`https://apphackaixades.azurewebsites.net/api/Simulacao/GetProduto/${codigoProduto}`);
   const produto = await response.json();
   return produto;
 }
 
+// Função para criar um objeto de resultado de simulação
 function criarResultadoSimulacao(tipo, parcelas) {
   return {
     tipo,
