@@ -67,7 +67,7 @@ function criarResultadoSimulacao(tipo, parcelas) {
     parcelas,
   };
 }
-/*
+
 async function simularEmprestimo(entrada) {
   const resultadoSimulacaoDto = await simular(entrada);
 
@@ -91,7 +91,7 @@ async function simularEmprestimo(entrada) {
     console.error('Erro ao enviar dados para a API:', response.statusText);
   }
 }
-*/
+
 
 function criarResultadoSimulacao(tipo, parcelas) {
   const resultado = new ResultadoSimulacaoDto();
