@@ -1,8 +1,4 @@
-// Importar as funções de cálculo de parcela
-import { calcularParcelasSAC, calcularParcelasPrice } from './calculoParcelas.js';
-
 // Importar as classes de dados
-import { Produto } from './Produto.js';
 import { ResultadoSimulacaoDto } from './ResultadoSimulacaoDto.js';
 import { RetornoSimulacaoDto } from './RetornoSimulacaoDto.js';
 
