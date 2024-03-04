@@ -1,6 +1,9 @@
+// Importar as funções de cálculo de parcela da pasta ParcelasDto.js
+import { calcularParcelasSAC, calcularParcelasPrice } from './ParcelasDto.js';
+
 // Importar as classes de dados
-import { ResultadoSimulacaoDto } from './ResultadoSimulacaoDto.js';
-import { RetornoSimulacaoDto } from './RetornoSimulacaoDto.js';
+import { ResultadoSimulacaoDto } from './script/ResultadoSimulacaoDto.js';
+import { RetornoSimulacaoDto } from './script/RetornoSimulacaoDto.js';
 
 // Função para simular o empréstimo
 async function simular(entrada) {
